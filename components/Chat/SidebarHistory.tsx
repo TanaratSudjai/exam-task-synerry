@@ -21,7 +21,6 @@ export default function SidebarHistory({
                     แชทใหม่
                 </BaseButton>
             </div>
-
             <div className="flex-1 overflow-y-auto p-2 space-y-1">
                 {sessions.length === 0 ? (
                     <div className="text-center p-4 text-slate-400 text-sm">

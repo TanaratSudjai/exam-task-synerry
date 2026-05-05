@@ -14,6 +14,13 @@ export interface Message {
     usage?: TokenUsage;
 }
 
+export interface ChatSession {
+    id: string;
+    title: string;
+    created_at: string;
+    first_msg?: string;
+}
+
 export interface ChatForm {
     message: string;
 }
