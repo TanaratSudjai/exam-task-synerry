@@ -18,11 +18,11 @@ const ChatBubble = ({ msg }: { msg: Message }) => {
 
       {!isUser && msg.usage && (
         <div className="flex flex-wrap gap-2 mt-2 ml-1">
-          <BaseBadge variant="info">
-            Tokens: {msg.usage.total_tokens}
+          <BaseBadge variant="lite">
+           ใช้ Tokens: {msg.usage.total_tokens}
           </BaseBadge>
-          <BaseBadge variant="success">
-            Time: {msg.usage.total_time.toFixed(3)}s
+          <BaseBadge variant="lite">
+            เวลาที่ใช้: {msg.usage.total_time.toFixed(3)}s
           </BaseBadge>
         </div>
       )}

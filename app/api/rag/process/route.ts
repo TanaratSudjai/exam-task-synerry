@@ -16,7 +16,7 @@ export async function POST(req: Request) {
         const chunks = chunkText(text);
 
         const chunksWithEmbeddings = [];
-
+        
         for (const chunk of chunks) {
             const embedding = await getEmbedding(chunk);
             chunksWithEmbeddings.push({

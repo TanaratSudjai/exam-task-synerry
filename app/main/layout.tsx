@@ -23,6 +23,11 @@ const myMenu: MenuItem[] = [
     title: 'Chat AI',
     icon: 'message',
     href: '/main/chat'
+  },
+  {
+    title: 'Document RAG',
+    icon: 'file',
+    href: '/main/rag'
   }
 ];
 
