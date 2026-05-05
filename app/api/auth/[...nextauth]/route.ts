@@ -1,6 +1,6 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { UserRepository } from "@/lib/user-db";
+import db from "@/lib/db";
 import bcrypt from "bcryptjs";
 
 export const authOptions: NextAuthOptions = {
@@ -15,9 +15,12 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
         try {
-          const user = await UserRepository.findByEmail(credentials.email);
-          if (!user) return null;
-
+          const [rows]: any = await db.execute(
+            'SELECT * FROM clients WHERE email = ?',
+            [credentials.email]
+          );
+          if (rows.length === 0) return null;
+          const user = rows[0];
           const isMatch = await bcrypt.compare(credentials.password, user.password_hash);
           if (isMatch) {
             return {

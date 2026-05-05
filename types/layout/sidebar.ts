@@ -3,7 +3,7 @@ export interface SubMenuItem {
   href: string;
 }
 
-export type MenuIcon = 'home' | 'users' | 'settings' | 'LayoutDashboard' | 'message' | 'file';
+export type MenuIcon = 'home' | 'users' | 'settings' | 'LayoutDashboard' | 'message';
 
 export interface MenuItem {
   title: string;

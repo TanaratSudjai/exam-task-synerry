@@ -10,7 +10,7 @@ import BaseItemForm from "@/components/Base/ItemForm";
 import Link from "next/link";
 
 export default function LoginPage() {
-  const { form, isLoading, handleLogin, handleChange } = useAuth();
+  const { form, setForm, isLoading, handleLogin, handleChange } = useAuth();
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-slate-50 p-4">

@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useRegister } from "@/hook/useRegister";
 
 export default function RegisterPage() {
-  const { form, isLoading, handleRegister, handleChange } = useRegister();
+  const { form, setForm, isLoading, handleRegister, handleChange } = useRegister();
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-slate-50 p-4">

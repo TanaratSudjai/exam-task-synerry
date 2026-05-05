@@ -7,14 +7,15 @@ export default withAuth(
   },
   {
     callbacks: {
-      authorized: ({ token }) => !!token,
+      authorized: ({ token }) => !!token, // ถ้ามี token แปลว่า Login แล้ว
     },
     pages: {
-      signIn: "/",
+      signIn: "/", // ถ้ายังไม่ Login ให้เด้งกลับไปที่ app/page.tsx (คือพาธ /)
     },
   }
 );
 
+// กำหนดว่า Path ไหนบ้างที่ต้องโดนบังคับ Login
 export const config = {
   matcher: [
     "/main/:path*",
