@@ -30,10 +30,7 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
       - name: Install Dependencies
-        run: npm install --legacy-peer-deps
-
-      - name: Install Linux-specific binaries
-        run: npm install lightningcss-linux-x64-gnu --save-optional --legacy-peer-deps
+        run: npm ci --legacy-peer-deps
 
       - name: Build Project
         run: npm run build
