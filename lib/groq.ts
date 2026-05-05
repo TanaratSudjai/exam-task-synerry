@@ -1,11 +1,9 @@
 import Groq from "groq-sdk";
 
-if (!process.env.GROQ_API_KEY) {
-    throw new Error("Missing GROQ_API_KEY in environment variables");
-}
+const apiKey = process.env.GROQ_API_KEY;
 
 export const groq = new Groq({
-    apiKey: process.env.GROQ_API_KEY,
+    apiKey: apiKey || "dummy_key",
 });
 
 export const GROQ_CONFIG = {
