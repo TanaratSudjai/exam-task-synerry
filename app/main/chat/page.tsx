@@ -9,6 +9,7 @@ import { useChat } from "@/hook/useChat";
 import ChatBubble from "@/components/Chat/ChatBubble";
 import EmptyState from "@/components/Chat/EmptyState";
 import LoadingBubble from "@/components/Chat/LoadingBubble";
+import BaseItemForm from "@/components/Base/ItemForm";
 
 export default function ChatPage() {
   const { messages, form, isLoading, messagesEndRef, handleSend, handleChange } = useChat();
@@ -24,7 +25,7 @@ export default function ChatPage() {
           <div ref={messagesEndRef} />
         </div>
         <div className="border-t border-slate-100 pt-4 mt-2">
-          <form onSubmit={handleSend} className="flex gap-3 items-start">
+          <BaseItemForm onSubmit={handleSend} className="flex gap-3 items-start">
             <BaseInput
               name="message"
               value={form.message}
@@ -43,7 +44,7 @@ export default function ChatPage() {
             >
               ส่ง
             </BaseButton>
-          </form>
+          </BaseItemForm>
         </div>
 
       </BaseCard>
