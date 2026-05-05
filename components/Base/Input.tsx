@@ -30,7 +30,7 @@ const BaseInput = forwardRef<HTMLInputElement, BaseInputProps>(function BaseInpu
 
   const inputClassName = [
     'w-full rounded-lg border bg-slate-50 py-2 text-sm text-slate-700 transition-all',
-    'focus:outline-none focus:ring-1 focus:ring-blue-500',
+    'focus:outline-none focus:ring-1 focus:ring-emerald-500',
     leftIcon ? 'pl-10' : 'pl-4',
     isPassword || rightIcon ? 'pr-10' : 'pr-4',
     error ? 'border-rose-300 focus:ring-rose-500' : 'border-slate-200',

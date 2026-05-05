@@ -19,14 +19,12 @@ export const AuthService = {
     login: async (credentials: any) => {
         const response = await apiClient.post('/auth/login', credentials);
         if (response.data?.token) {
-            // NextAuth handles session
             await AuthService.getProfile();
         }
         return response.data;
     },
 
     isAuthenticated: (): boolean => {
-        // Should be replaced with NextAuth session check
         return false;
     }
 };
