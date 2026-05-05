@@ -14,11 +14,6 @@ const kanit = Kanit({
 
 
 const myMenu: MenuItem[] = [
-  // {
-  //   title: 'Board Lib components',
-  //   icon: 'LayoutDashboard',
-  //   href: '/main/lib'
-  // },
   {
     title: 'Chat AI',
     icon: 'message',
@@ -38,13 +33,10 @@ export default function RootLayout({
 }) {
   return (
     <div lang="en">
-      <div className={`${kanit.variable} min-h-screen bg-slate-50 flex`}>
-        {/* Sidebar */}
+      <div className={`${kanit.variable} min-h-screen flex`}>
         <Sidebar menuItems={myMenu} />
-        {/* Main Content Area */}
         <div className="flex flex-1 flex-col lg:ml-64 min-h-screen w-full overflow-hidden">
           <Navbar />
-          {/* Dynamic Content */}
           <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-6">
             {children}
           </main>
