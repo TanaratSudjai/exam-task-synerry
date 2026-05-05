@@ -13,7 +13,7 @@ import LoadingBubble from "@/components/Chat/LoadingBubble";
 export default function ChatPage() {
   const { messages, form, isLoading, messagesEndRef, handleSend, handleChange } = useChat();
   return (
-    <div className="flex flex-col h-[calc(100vh-100px)] max-w-4xl mx-auto p-4">
+    <div className="flex flex-col h-[calc(100vh-100px)] p-4">
       <BaseCard className="flex-1 flex flex-col overflow-hidden h-full">
         <div className="flex-1 overflow-y-auto p-4 space-y-6">
           {messages.length === 0 && <EmptyState />}
