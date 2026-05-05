@@ -33,7 +33,7 @@ export async function DELETE(req: Request) {
             return NextResponse.json({ error: "Session ID is required" }, { status: 400 });
         }
 
-        await ChatRepository.deleteSession(sessionId, userId);
+        await ChatRepository.deleteSession(Number(sessionId), userId);
         return NextResponse.json({ success: true });
     } catch (error) {
         console.error("Delete session error:", error);
