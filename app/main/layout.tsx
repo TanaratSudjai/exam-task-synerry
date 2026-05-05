@@ -14,19 +14,15 @@ const kanit = Kanit({
 
 
 const myMenu: MenuItem[] = [
-  { title: 'Dashboard', icon: 'home', href: '/' },
+  // {
+  //   title: 'Board Lib components',
+  //   icon: 'LayoutDashboard',
+  //   href: '/main/lib'
+  // },
   {
-    title: 'Management',
-    icon: 'users',
-    subMenu: [
-      { title: 'User List', href: '/users' },
-      { title: 'Permissions', href: '/permissions' },
-    ]
-  },
-  {
-    title: 'Board Lib components',
-    icon: 'LayoutDashboard',
-    href: '/lib'
+    title: 'Chat AI',
+    icon: 'message',
+    href: '/main/chat'
   }
 ];
 
@@ -40,22 +36,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${kanit.variable} min-h-screen bg-slate-50 flex`}>
+    <div lang="en">
+      <div className={`${kanit.variable} min-h-screen bg-slate-50 flex`}>
         {/* Sidebar */}
         <Sidebar menuItems={myMenu} />
-        
         {/* Main Content Area */}
         <div className="flex flex-1 flex-col lg:ml-64 min-h-screen w-full overflow-hidden">
           {/* Top Navigation */}
           <Navbar />
-          
           {/* Dynamic Content */}
           <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-6">
             {children}
           </main>
         </div>
-      </body>
-    </html>
+      </div>
+    </div>
   );
 }

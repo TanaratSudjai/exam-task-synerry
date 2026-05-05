@@ -8,6 +8,7 @@ declare module 'toastify-js' {
     stopOnFocus?: boolean;
     style?: Record<string, string>;
     onClick?: () => void;
+    backgroundColor?: string;
   }
 
   interface ToastifyInstance {

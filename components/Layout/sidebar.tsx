@@ -2,22 +2,33 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ChevronDown, Home, Menu, Settings, Users, X, LayoutDashboard } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import Image from 'next/image';
+import { ChevronDown, Home, Menu, Settings, Users, X, LayoutDashboard, MessageSquare } from 'lucide-react';
 import { MenuIcon, SidebarProps } from '@/types/layout/sidebar';
 
 const iconMap: Record<MenuIcon, React.ComponentType<{ size?: number }>> = {
   home: Home,
   users: Users,
   settings: Settings,
-  LayoutDashboard: LayoutDashboard
+  LayoutDashboard: LayoutDashboard,
+  message: MessageSquare
 };
 
 function Sidebar({ menuItems }: SidebarProps) {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState<string | null>(null);
+
   const toggleSidebar = () => setIsOpen((current) => !current);
   const toggleSubMenu = (title: string) => {
     setOpenSubMenu((current) => (current === title ? null : title));
+  };
+
+  const isActive = (href?: string) => {
+    if (!href) return false;
+    if (href === '/') return pathname === '/';
+    return pathname.startsWith(href);
   };
 
   return (
@@ -25,7 +36,7 @@ function Sidebar({ menuItems }: SidebarProps) {
       {/* Mobile Toggle Button */}
       <button
         onClick={toggleSidebar}
-        className="fixed top-4 left-4 z-[60] p-2 bg-slate-800 text-white rounded-md lg:hidden"
+        className="fixed top-4 left-4 z-[60] p-2 bg-emerald-900 text-white rounded-md lg:hidden"
       >
         {isOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
@@ -40,13 +51,18 @@ function Sidebar({ menuItems }: SidebarProps) {
 
       {/* Sidebar Panel */}
       <aside className={`
-        fixed top-0 left-0 z-[50] h-screen bg-slate-900 text-slate-100 transition-transform duration-300 ease-in-out
-        w-64 border-r border-slate-700
+        fixed top-0 left-0 z-[50] h-screen bg-emerald-700 text-emerald-50 transition-transform duration-300 ease-in-out
+        w-64 border-r border-emerald-800
         ${isOpen ? 'translate-x-0' : '-translate-x-full'} 
         lg:translate-x-0
       `}>
-        <div className="p-6">
-          <h2 className="text-2xl font-kanit font-bold text-white">THOD DEV LIB</h2>
+        <div className="p-3 flex justify-center items-center gap-3">
+          <Image
+            src="/hi-remove-bg.png"
+            alt="Logo"
+            width={150}
+            height={150}
+          />
         </div>
 
         <nav className="mt-4 px-4 space-y-2 font-kanit">
@@ -61,13 +77,19 @@ function Sidebar({ menuItems }: SidebarProps) {
                     onClick={() => toggleSubMenu(item.title)}
                     aria-expanded={openSubMenu === item.title}
                     aria-controls={`submenu-${item.title}`}
-                    className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-slate-800 transition-colors group text-left"
+                    className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors group text-left ${openSubMenu === item.title || item.subMenu?.some(sub => isActive(sub.href))
+                      ? 'bg-emerald-800/50 text-white'
+                      : 'hover:bg-emerald-800 text-emerald-100'
+                      }`}
                   >
                     <div className="flex items-center gap-3">
-                      <span className="text-slate-400 group-hover:text-white">
+                      <span className={`${openSubMenu === item.title || item.subMenu?.some(sub => isActive(sub.href))
+                        ? 'text-white'
+                        : 'text-emerald-300 group-hover:text-white'
+                        }`}>
                         {Icon ? <Icon size={20} /> : null}
                       </span>
-                      <span>{item.title}</span>
+                      <span className="font-medium">{item.title}</span>
                     </div>
                     <ChevronDown
                       size={16}
@@ -77,35 +99,44 @@ function Sidebar({ menuItems }: SidebarProps) {
                 ) : (
                   <Link
                     href={item.href ?? '#'}
-                    className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-slate-800 transition-colors group text-left"
+                    className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors group text-left ${isActive(item.href)
+                      ? 'bg-emerald-800 text-white shadow-sm'
+                      : 'hover:bg-emerald-800 text-emerald-100'
+                      }`}
                   >
                     <div className="flex items-center gap-3">
-                      <span className="text-slate-400 group-hover:text-white">
+                      <span className={`${isActive(item.href) ? 'text-white' : 'text-emerald-300 group-hover:text-white'}`}>
                         {Icon ? <Icon size={20} /> : null}
                       </span>
-                      <span>{item.title}</span>
+                      <span className="font-medium">{item.title}</span>
                     </div>
+                    {isActive(item.href) && (
+                      <div className="w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
+                    )}
                   </Link>
                 )}
 
                 {item.subMenu && openSubMenu === item.title && (
-                  <div className="ml-6 mt-1 flex flex-col border-l border-slate-700/50 pl-4 space-y-1 transition-all duration-300">
+                  <div className="ml-6 mt-1 flex flex-col border-l border-emerald-700/50 pl-4 space-y-1 transition-all duration-300">
                     {item.subMenu.map((sub) => (
-                      <a
+                      <Link
                         key={sub.title}
-                        href={sub.href}
-                        className="relative group/sub flex items-center p-2 text-sm text-slate-400 hover:text-white transition-all rounded-md overflow-hidden"
+                        href={sub.href ?? '#'}
+                        className={`relative group/sub flex items-center p-2 text-sm transition-all rounded-md overflow-hidden ${isActive(sub.href) ? 'text-white font-medium bg-white/10' : 'text-emerald-200 hover:text-white'
+                          }`}
                       >
-                        {/* Dot Indicator: จุดเล็กๆ หน้าเมนูย่อย */}
-                        <span className="absolute left-[-17px] w-1.5 h-1.5 rounded-full bg-slate-700 group-hover/sub:bg-blue-400 transition-colors" />
+                        {/* Dot Indicator */}
+                        <span className={`absolute left-[-17px] w-1.5 h-1.5 rounded-full transition-colors ${isActive(sub.href) ? 'bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'bg-emerald-600 group-hover/sub:bg-white'
+                          }`} />
 
-                        <span className="font-kanit font-light group-hover/sub:translate-x-1 transition-transform">
+                        <span className={`font-kanit ${isActive(sub.href) ? '' : 'font-light'} group-hover/sub:translate-x-1 transition-transform`}>
                           {sub.title}
                         </span>
 
-                        {/* Hover Highlight: แถบสีบางๆ ด้านหลังเวลาเอาเมาส์วาง */}
-                        <div className="absolute inset-0 bg-white/5 opacity-0 group-hover/sub:opacity-100 transition-opacity" />
-                      </a>
+                        {/* Hover/Active Highlight */}
+                        <div className={`absolute inset-0 bg-white/5 transition-opacity ${isActive(sub.href) ? 'opacity-100' : 'opacity-0 group-hover/sub:opacity-100'
+                          }`} />
+                      </Link>
                     ))}
                   </div>
                 )}

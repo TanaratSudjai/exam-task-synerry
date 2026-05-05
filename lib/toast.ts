@@ -2,7 +2,7 @@ import Toastify from 'toastify-js'
 
 // เพิ่ม 'info' และ 'default' เข้าไปใน Type
 export const showToast = (
-  message: string, 
+  message: string,
   type: 'success' | 'error' | 'warning' | 'info' | 'default' = 'success'
 ) => {
 
@@ -29,10 +29,10 @@ export const showToast = (
       fontSize: "14px",
       fontWeight: "400",
       // กำหนด boxShadow เป็น none เพื่อเอาเงาออก
-      boxShadow: "none", 
+      boxShadow: "none",
       padding: "12px 20px",
       color: "#ffffff"
     },
-    onClick: function(){}
+    onClick: function () { }
   }).showToast();
 }
