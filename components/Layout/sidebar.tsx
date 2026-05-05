@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import { ChevronDown, Home, Menu, Settings, Users, X, LayoutDashboard, MessageSquare } from 'lucide-react';
+import { ChevronDown, Home, Menu, Settings, Users, X, LayoutDashboard, MessageSquare, FileText } from 'lucide-react';
 import { MenuIcon, SidebarProps } from '@/types/layout/sidebar';
 
 const iconMap: Record<MenuIcon, React.ComponentType<{ size?: number }>> = {
@@ -12,7 +12,8 @@ const iconMap: Record<MenuIcon, React.ComponentType<{ size?: number }>> = {
   users: Users,
   settings: Settings,
   LayoutDashboard: LayoutDashboard,
-  message: MessageSquare
+  message: MessageSquare,
+  file: FileText
 };
 
 function Sidebar({ menuItems }: SidebarProps) {

@@ -1,5 +1,5 @@
-import { Loader2 } from 'lucide-react';
 import { BaseSpinnerProps } from '@/types/spiner';
+import Image from 'next/image';
 
 const BaseSpinner = ({
     show = true,
@@ -24,7 +24,13 @@ const BaseSpinner = ({
     return (
         <div className={`${containerStyle} flex flex-col items-center justify-center font-kanit animate-in fade-in duration-300`}>
             <div className={`relative flex items-center justify-center ${colorClasses[activeColor]}`}>
-                <Loader2 size={48} className="animate-spin" />
+                {/* <Loader2 size={48} className="animate-spin" /> */}
+                <Image
+                    src="/loading.png"
+                    alt="Logo"
+                    width={140}
+                    height={140}
+                />
             </div>
 
             <div className="mt-5 flex flex-col items-center gap-1">
