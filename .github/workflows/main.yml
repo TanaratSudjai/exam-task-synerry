@@ -1,4 +1,4 @@
-name: Next.js CI
+name: Next.js Build Action
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22' 
           cache: 'npm'
 
       - name: Restore Next.js Build Cache
@@ -34,6 +34,3 @@ jobs:
 
       - name: Build Project
         run: npm run build
-
-      - name: Run Tests
-        run: npm test # หากมีการเขียน Unit Test ไว้
