@@ -9,12 +9,34 @@ import { useChat } from "@/hook/useChat";
 import ChatBubble from "@/components/Chat/ChatBubble";
 import EmptyState from "@/components/Chat/EmptyState";
 import LoadingBubble from "@/components/Chat/LoadingBubble";
+import SidebarHistory from "@/components/Chat/SidebarHistory";
 import BaseItemForm from "@/components/Base/ItemForm";
 
 export default function ChatPage() {
-  const { messages, form, isLoading, messagesEndRef, handleSend, handleChange } = useChat();
+  const { 
+    messages, 
+    sessions, 
+    activeSessionId, 
+    setActiveSessionId, 
+    form, 
+    isLoading, 
+    messagesEndRef, 
+    handleSend, 
+    handleChange,
+    handleNewChat 
+  } = useChat();
+
   return (
-    <div className="flex flex-col h-[calc(100vh-100px)] p-4">
+    <div className="flex h-[calc(100vh-100px)] gap-4 p-4">
+      {/* ประวัติแชทด้านซ้าย */}
+      <SidebarHistory 
+        sessions={sessions}
+        activeSessionId={activeSessionId}
+        onSelectSession={setActiveSessionId}
+        onNewChat={handleNewChat}
+      />
+
+      {/* พื้นที่แชทหลัก */}
       <BaseCard className="flex-1 flex flex-col overflow-hidden h-full">
         <div className="flex-1 overflow-y-auto p-4 space-y-6">
           {messages.length === 0 && <EmptyState />}
@@ -46,7 +68,6 @@ export default function ChatPage() {
             </BaseButton>
           </BaseItemForm>
         </div>
-
       </BaseCard>
     </div>
   );

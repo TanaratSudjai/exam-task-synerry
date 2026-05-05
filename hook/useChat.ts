@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Message, ChatForm } from "@/types/chat";
+import { Message, ChatForm, ChatSession } from "@/types/chat";
 import { ChatService } from "@/service/Chat/chatService";
 
 const initialForm: ChatForm = {
@@ -8,6 +8,8 @@ const initialForm: ChatForm = {
 
 export const useChat = () => {
     const [messages, setMessages] = useState<Message[]>([]);
+    const [sessions, setSessions] = useState<ChatSession[]>([]);
+    const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
     const [form, setForm] = useState<ChatForm>(initialForm);
     const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -15,6 +17,34 @@ export const useChat = () => {
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
+
+    // โหลดรายการ session ทั้งหมด
+    const loadSessions = async () => {
+        try {
+            const data = await ChatService.getSessions();
+            setSessions(data);
+        } catch (error) {
+            console.error("Failed to fetch sessions", error);
+        }
+    };
+
+    // โหลดประวัติของ session ที่เลือก
+    const loadHistory = async (sessionId: string | null) => {
+        try {
+            const history = await ChatService.getHistory(sessionId);
+            setMessages(history);
+        } catch (error) {
+            console.error("Failed to fetch history", error);
+        }
+    };
+
+    useEffect(() => {
+        loadSessions();
+    }, []);
+
+    useEffect(() => {
+        loadHistory(activeSessionId);
+    }, [activeSessionId]);
 
     useEffect(() => {
         scrollToBottom();
@@ -31,12 +61,23 @@ export const useChat = () => {
 
         const userMessage: Message = { role: "user", content: form.message };
         setMessages((prev) => [...prev, userMessage]);
+        const currentMessage = form.message;
         setForm(initialForm);
         setIsLoading(true);
 
         try {
-            const assistantMessage = await ChatService.sendMessage(userMessage.content);
-            setMessages((prev) => [...prev, assistantMessage]);
+            const response = await ChatService.sendMessage(currentMessage, activeSessionId);
+            setMessages((prev) => [...prev, {
+                role: "assistant",
+                content: response.content,
+                usage: response.usage
+            }]);
+            
+            // ถ้าเป็นแชทใหม่ (เพิ่งได้ sessionId มา) ให้สลับไป session นั้น
+            if (!activeSessionId && response.sessionId) {
+                setActiveSessionId(response.sessionId);
+                loadSessions();
+            }
         } catch (error) {
             console.error("Failed to send message", error);
         } finally {
@@ -44,13 +85,22 @@ export const useChat = () => {
         }
     };
 
+    const handleNewChat = () => {
+        setActiveSessionId(null);
+        setMessages([]);
+    };
+
     return {
         messages,
+        sessions,
+        activeSessionId,
+        setActiveSessionId,
         form,
         setForm,
         isLoading,
         messagesEndRef,
         handleSend,
         handleChange,
+        handleNewChat,
     };
 };
