@@ -33,7 +33,7 @@ jobs:
         run: npm install --legacy-peer-deps
 
       - name: Install Linux-specific binaries
-        run: npm install lightningcss-linux-x64-gnu --save-optional --legacy-peer-deps
+        run: npm install lightningcss-linux-x64-gnu @tailwindcss/oxide-linux-x64-gnu --save-optional --legacy-peer-deps
 
       - name: Build Project
         run: npm run build
