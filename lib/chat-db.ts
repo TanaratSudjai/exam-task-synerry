@@ -1,7 +1,8 @@
 import db from "./db";
+import { ChatSessionRow, ChatMessageRow } from "@/types/chat";
 
 export const ChatRepository = {
-    async getSessions(userId: number) {
+    async getSessions(userId: number): Promise<ChatSessionRow[]> {
         const [rows]: any = await db.execute(
             `SELECT s.id, s.title, s.created_at, 
             (SELECT content FROM chat_messages WHERE session_id = s.id ORDER BY created_at ASC LIMIT 1) as first_msg
@@ -10,10 +11,10 @@ export const ChatRepository = {
             ORDER BY s.created_at DESC`,
             [userId]
         );
-        return rows;
+        return rows as ChatSessionRow[];
     },
 
-    async getMessages(userId: number, sessionId?: string | null) {
+    async getMessages(userId: number, sessionId?: string | null): Promise<ChatMessageRow[]> {
         let query = 'SELECT role, content FROM chat_messages m JOIN chat_sessions s ON m.session_id = s.id WHERE s.client_id = ?';
         let params: any[] = [userId];
 
@@ -23,10 +24,10 @@ export const ChatRepository = {
         }
 
         const [rows]: any = await db.execute(query + ' ORDER BY m.created_at ASC', params);
-        return rows;
+        return rows as ChatMessageRow[];
     },
 
-    async createSession(userId: number, title: string) {
+    async createSession(userId: number, title: string): Promise<number> {
         const [result]: any = await db.execute(
             'INSERT INTO chat_sessions (client_id, title) VALUES (?, ?)',
             [userId, title.substring(0, 50)]
@@ -34,12 +35,12 @@ export const ChatRepository = {
         return result.insertId;
     },
 
-    async getRecentHistory(sessionId: number, limit: number = 10) {
+    async getRecentHistory(sessionId: number, limit: number = 10): Promise<ChatMessageRow[]> {
         const [history]: any = await db.execute(
             'SELECT role, content FROM chat_messages WHERE session_id = ? ORDER BY created_at DESC LIMIT ?',
             [sessionId, limit]
         );
-        return history.reverse();
+        return history.reverse() as ChatMessageRow[];
     },
 
     async saveMessage(sessionId: number, role: string, content: string, usage?: any) {
