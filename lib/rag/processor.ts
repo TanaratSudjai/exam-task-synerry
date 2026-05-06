@@ -1,10 +1,20 @@
 import { PdfReader } from "pdfreader";
 
-export interface ProcessedDocument {
-    fileName: string;
-    text: string;
-    chunks: string[];
-}
+// ฟังก์ชันช่วยจัดการภาษาไทยที่เพี้ยนจากการสกัด PDF
+const normalizeThaiText = (text: string): string => {
+    return text
+        // 1. ลบช่องว่างระหว่างพยัญชนะกับสระ/วรรณยุกต์ (เช่น แ ม ่ -> แม่)
+        .replace(/\s+([ัิีึืุู็่้๊๋์])/g, '$1')
+        // 2. จัดการช่องว่างที่อาจจะเกิดขึ้นระหว่างสระหน้ากับพยัญชนะ (เช่น แ ม -> แม)
+        .replace(/([เแโใไ])\s+([ก-ฮ])/g, '$1$2')
+        // 3. จัดการช่องว่างระหว่างพยัญชนะ (กรณีโดนแยกทุกตัวอักษร)
+        // จะใช้ Regex ที่ระวังไม่ให้ไปรวมคำที่ตั้งใจเว้นวรรคจริงๆ
+        .replace(/([ก-ฮ])\s+(?=[ก-ฮ][ัิีึืุู็่้๊๋์]?)/g, '$1')
+        // 4. ลบช่องว่างซ้ำซ้อน
+        .replace(/\s+/g, ' ')
+        .trim();
+};
+
 
 export const extractTextFromBuffer = async (buffer: Buffer, fileType: string): Promise<string> => {
     if (fileType === "application/pdf") {
@@ -18,37 +28,29 @@ export const extractTextFromBuffer = async (buffer: Buffer, fileType: string): P
                     console.error("PdfReader Error:", err);
                     reject(new Error("ไม่สามารถอ่านไฟล์ PDF ได้: " + err.message));
                 } else if (!item) {
-                    // จบการอ่านไฟล์
-                    console.log("PDF Parsing Completed. Total length:", text.length);
-                    if (!hasData && text.length === 0) {
-                        console.warn("PDF parsed but no text was extracted.");
-                    }
-                    resolve(text.trim());
+                    // จบการอ่านไฟล์ และทำความสะอาดภาษาไทย
+                    const cleanedText = normalizeThaiText(text);
+                    console.log("PDF Parsing Completed. Cleaned length:", cleanedText.length);
+                    resolve(cleanedText);
                 } else if (item.text) {
-                    // สะสมข้อความจากแต่ละส่วนของ PDF
                     text += item.text + " ";
                     hasData = true;
                 }
             });
         });
     } else {
-        return buffer.toString("utf-8");
+        return normalizeThaiText(buffer.toString("utf-8"));
     }
 };
 
 export const chunkText = (text: string, chunkSize: number = 800, overlap: number = 150): string[] => {
     if (!text || text.trim().length === 0) return [];
 
-    // ลบ whitespace และอักขระพิเศษส่วนเกิน
-    const cleanText = text.replace(/\s+/g, ' ').trim();
     const chunks: string[] = [];
-
     let i = 0;
-    while (i < cleanText.length) {
-        chunks.push(cleanText.slice(i, i + chunkSize));
+    while (i < text.length) {
+        chunks.push(text.slice(i, i + chunkSize));
         i += (chunkSize - overlap);
-
-        // กัน Loop ค้างถ้า i ไม่เพิ่ม
         if (chunkSize - overlap <= 0) break;
     }
     return chunks;
