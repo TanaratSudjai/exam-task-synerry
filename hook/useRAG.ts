@@ -78,7 +78,8 @@ export const useRAG = () => {
             setMessages(prev => [...prev, { 
                 role: "assistant", 
                 content: data.content,
-                usage: data.usage
+                usage: data.usage,
+                sources: data.sources
             }]);
         } catch (error: any) {
             console.error(error);
