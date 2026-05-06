@@ -58,3 +58,11 @@ export interface ContentRendererProps {
     content: string;
     sources?: Source[];
 }
+
+export interface SidebarHistoryProps {
+    sessions: ChatSession[];
+    activeSessionId: number | null;
+    onSelectSession: (id: number | null) => void;
+    onDeleteSession: (id: number) => void;
+    onNewChat: () => void;
+}
