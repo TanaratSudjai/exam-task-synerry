@@ -3,15 +3,7 @@
 import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
 import { useClickOutside } from '@/hook/useClickOutside';
-
-interface ModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    title?: string;
-    children: React.ReactNode;
-    footer?: React.ReactNode;
-    size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
-}
+import { ModalProps } from '@/types/modal';
 
 function Modal({
     isOpen,

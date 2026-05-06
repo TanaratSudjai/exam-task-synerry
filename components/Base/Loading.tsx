@@ -1,10 +1,6 @@
 import { Inbox } from 'lucide-react';
 
-interface BaseLoadingProps {
-    type?: 'spinner' | 'table' | 'card' | 'empty';
-    rows?: number;
-    text?: string;
-}
+import { BaseLoadingProps } from '@/types/loading';
 
 const BaseLoading = ({ type = 'spinner', rows = 5, text }: BaseLoadingProps) => {
     
