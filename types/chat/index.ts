@@ -29,10 +29,17 @@ export interface TokenUsage {
     total_time: number;
 }
 
+export interface Source {
+    id: number;
+    content: string;
+    score: number;
+}
+
 export interface Message {
     role: "user" | "assistant";
     content: string;
     usage?: TokenUsage;
+    sources?: Source[];
 }
 
 export interface ChatSession {
@@ -44,4 +51,10 @@ export interface ChatSession {
 
 export interface ChatForm {
     message: string;
+}
+
+
+export interface ContentRendererProps {
+    content: string;
+    sources?: Source[];
 }
