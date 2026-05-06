@@ -1,14 +1,6 @@
 import { MessageSquare, Plus, Trash2 } from "lucide-react";
 import BaseButton from "../Base/Button";
-import { ChatSession } from "@/types/chat";
-
-interface SidebarHistoryProps {
-    sessions: ChatSession[];
-    activeSessionId: number | null;
-    onSelectSession: (id: number | null) => void;
-    onDeleteSession: (id: number) => void;
-    onNewChat: () => void;
-}
+import { ChatSession, SidebarHistoryProps } from "@/types/chat";
 
 export default function SidebarHistory({
     sessions,
