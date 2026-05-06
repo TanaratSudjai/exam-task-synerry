@@ -47,7 +47,7 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-100px)] gap-4 p-4">
+    <div className="flex flex-col md:flex-row h-[calc(100vh-100px)] gap-4 p-2 md:p-4">
       <SidebarHistory
         sessions={sessions}
         activeSessionId={activeSessionId}

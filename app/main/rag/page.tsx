@@ -31,7 +31,7 @@ export default function RAGPage() {
   return (
     <div className="space-y-6 pb-6">
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-220px)]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:h-[calc(100vh-220px)]">
         <div className="lg:col-span-4 space-y-4 flex flex-col h-full">
           <BaseCard className="p-6 h-fit border-none shadow-sm flex flex-col gap-6">
             <BaseFileUpload
@@ -78,7 +78,7 @@ export default function RAGPage() {
           </BaseCard>
         </div>
 
-        <div className="lg:col-span-8 flex flex-col h-full overflow-hidden">
+        <div className="lg:col-span-8 flex flex-col h-auto lg:h-full overflow-hidden">
           <BaseCard className="flex-1 flex flex-col overflow-hidden border-none shadow-sm bg-white">
             <div className="flex-1 overflow-y-auto p-4 space-y-6 bg-slate-50/20">
               {messages.length === 0 && <EmptyState />}
