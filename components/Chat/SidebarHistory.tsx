@@ -10,7 +10,7 @@ export default function SidebarHistory({
     onNewChat
 }: SidebarHistoryProps) {
     return (
-        <div className="w-64 border-r border-slate-100 flex flex-col h-full bg-white">
+        <div className="w-full md:w-64 md:border-r border-b md:border-b-0 border-slate-100 flex flex-col h-48 md:h-full shrink-0 bg-white">
             <div className="p-4 border-b border-slate-100">
                 <BaseButton
                     variant="primary"
